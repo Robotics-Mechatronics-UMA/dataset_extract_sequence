@@ -1,0 +1,1 @@
+output : folder : [device1, device2] : [format1, format2] : start_time : end_time : exclude : pop_limits
