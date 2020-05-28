@@ -1,0 +1,5 @@
+python extract_from_file.py -o output/ -f input/ -d imu -t single_file --start 1559735717.606276 --end 1559735717.720282
+
+python extract_from_file.py -o output/ -f input/ -d image_rgb -t multiple_files --start 1559735717.606276 --end 1559735717.720282
+
+python extract_from_file.py -o output/ -f input/ -d image_rgb imu -t multiple_files single_file --start 1559735717.606276 --end 1559735717.720282

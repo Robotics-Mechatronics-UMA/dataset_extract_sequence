@@ -1,11 +1,11 @@
 from os import listdir, getcwd
 from os.path import isfile, isdir, join
 
-from options import ExtractOptions
+from extract_single_options import SingleExtractOptions
 from extract_sequence import SingleSequence
 
 # Global variables for arguments and path
-options = ExtractOptions()
+options = SingleExtractOptions()
 opts = options.parse()
 cwd = getcwd()
 
@@ -15,5 +15,3 @@ if __name__ == "__main__":
                               opts.data_types, opts.start, opts.end)
 
     sequence.extract()
-    
-    #TODO: CREATE DIRECTORIES AND MULTI-FOLDER WITH .TXT FILE.

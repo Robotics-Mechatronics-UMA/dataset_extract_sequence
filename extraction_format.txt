@@ -1,1 +1,27 @@
-output : folder : [device1, device2] : [format1, format2] : start_time : end_time : exclude : pop_limits
+This is the format to be followed by any .txt that wants to be used as an input for the extract_file.py script.
+Each line corresponds to a sequence that can have the same name. The format uses `/` , ` ` or `:` separators and there must be no blank lines. 
+
+Each line is:
+
+        output / folder / device1,device2 ... / format1, format2 ... / interaval 1, interval 2 ...
+
+The number of devices and folders must be the same.
+
+The format can be:
+
+    * single_file: in case that the data is stored in a data.txt file. The structure of the data inside the file is expected to be:
+
+        timestamp data...
+
+    * multiple_files: in case that the data is stored in multiple files. The filename of the data is expected to be:
+
+        seqNumber_timestamp.extension
+
+Each interval is of type:
+
+    start:end
+
+The units must be the same as in the data as they are compared.
+
+Using -1 as start or end means that there is no low or up bound.
+

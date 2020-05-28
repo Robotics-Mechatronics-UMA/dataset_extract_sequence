@@ -1,4 +1,4 @@
-from os import listdir, getcwd
+from os import listdir, getcwd, mkdir
 from os.path import isfile, isdir, join, splitext
 from shutil import copyfile
 import io
@@ -20,6 +20,7 @@ class SingleSequence:
         self.pop_limits = pop_limits
 
         self.list_directories()
+        self.create_output_directories()
 
     def list_directories(self):
         """
@@ -31,7 +32,19 @@ class SingleSequence:
         self.directories = []
 
         for idx, device in enumerate(self.devices):
+            print("Device added: " + device)
             self.directories.append(DataDirectory(device, self.datatypes[idx]))
+    
+    def create_output_directories(self):
+        """
+            Method to create the directories to extract the data.
+        """
+        if not isdir(self.output):
+            mkdir(self.output)
+
+            for directory in self.directories:
+                mkdir(join(self.output,directory.device))
+                print("Created directory: " + join(self.output,directory.device))
 
     def get_timestamp_txt(self, line):
         """
@@ -68,28 +81,30 @@ class SingleSequence:
             Method to extract part of a input data.txt file and copy it to the output data.txt.
         """
         # Get the name for the input file: /folder/device/data.txt
-        input_file_name = self.folder + directory.device + '/data.txt'
+        input_file_name = join(self.folder,directory.device, 'data.txt')
 
         # Get the name for the output file: /output/device/data.txt
-        output_file_name = self.output + directory.device + '/data.txt'
+        output_file_name = join(self.output, directory.device, 'data.txt')
 
         # Open both files
-        with open(input_file_name, 'r') as input_file, open(output_file_name, 'w') as output_file:
+        with open(input_file_name, 'r') as input_file, open(output_file_name, 'a+') as output_file:
             for line in input_file:
                 timestamp = self.get_timestamp_txt(line)
                 if(timestamp >= self.start and timestamp <= self.end):
+                    #print("As: " + str(timestamp) + " is in between: " + str(self.start) + " and " + str(self.end))
                     print("Written: " + line)
                     output_file.write(line)
 
     def extract_data_multi(self, directory):
 
         # List the directory files.
-        for filename in listdir(self.folder + directory.device + '/'):
+        for filename in listdir(join(self.folder,directory.device)):
 
             # Separate sequence, timestamps and extension.
             timestamp = self.get_timestamp_filename(filename)
 
             if(timestamp >= self.start and timestamp <= self.end):
+                #print("As: " + str(timestamp) + " is in between: " + str(self.start) + " and " + str(self.end))
                 print("Copied: " + filename)
                 copyfile(join(self.folder, directory.device, filename),
                          join(self.output, directory.device, filename))
@@ -111,8 +126,3 @@ class DataDirectory:
     def __init__(self, device, datatype):
         self.device = device
         self.datatype = datatype
-
-
-if __name__ == "__main__":
-
-    print("HEllo")
