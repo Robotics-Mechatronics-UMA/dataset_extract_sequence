@@ -19,8 +19,8 @@ Just clone the repository and check the dependencies.
 
 * `*_options:` the scripts to store the options for 'argparse'.
 * `extract_sequence:` class to extract data from a single sequence (e.g. folder).
-* `extract_single:` script to extract data from a single sequence. It recieves several options (see extract_single_options.py).
-* `extract_file:` script to automate the process of extracting data from multiple sequences. It uses a .txt file as a single parameter with a specific format to describe the different sequences that can be shared and edited (see extraction_format.txt).
+* `extract_single:` script to extract data from a single sequence. It recieves several options (see [Single extraction options](https://github.com/davdmc/extract_sequence#single-extraction-options) or [extract_single_options.py](https://github.com/davdmc/extract_sequence/blob/master/extract_single_options.py)).
+* `extract_file:` script to automate the process of extracting data from multiple sequences. It uses a .txt file as a single parameter with a specific format to describe the different sequences that can be shared and edited (see [Extraction format](https://github.com/davdmc/extract_sequence#extraction-format) or [extraction_format.txt](https://github.com/davdmc/extract_sequence/blob/master/extraction_format.txt)).
 
 ## Usage
 
@@ -28,9 +28,25 @@ In the case of `extract_single`, you have to specify all the needed arguments. T
 
     python extract_from_file.py -o output/ -f input/ -d imu -t single_file --start 1559735717.606276 --end 1559735717.720282
 
-In the case of `extract_file`, you have to create a .txt file to store the information about the extraction in the right format (see extraction_format.txt). There is an example in the file `test_sequence.txt`:
+In the case of `extract_file`, you have to create a .txt file to store the information about the extraction in the right format (see [Extraction format](https://github.com/davdmc/extract_sequence#extraction-format) or [extraction_format.txt](https://github.com/davdmc/extract_sequence/blob/master/extraction_format.txt)). There is an example in the file `test_sequence.txt`:
 
     python extract_file.py -f test_file.txt
+
+## Single extraction options
+
+- `-o/--output:` Output sequence name (i.e. relative path).
+
+- `-f/--folder:` Objective folder to extract from.
+
+- `-d/--device_list:` Spaced separated list with the aimed devices.
+
+- `-t/--data_formats:` Format to extract files from {single_file / multiple_files}.
+
+- `--start:` Start time for the sequence.
+
+- `--end:` End time for the sequence.
+
+- `-v/--verbose:` Optional parameter to print additional info for debug purposes.
 
 ## Extraction format
 
