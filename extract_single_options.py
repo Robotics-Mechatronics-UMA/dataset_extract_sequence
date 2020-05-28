@@ -10,7 +10,7 @@ class SingleExtractOptions():
         self.parser.add_argument('-o', '--output', type=str,
                                  help='Output sequence name', required=True)
         self.parser.add_argument('-f', '--folder', type=str,
-                                 help='Objective folder', required=True)
+                                 help='Objective folder to extract from.r', required=True)
         self.parser.add_argument('-d', '--device_list', type=str, nargs='+',
                                  help='Delimited list with the aimed devices', required=True)
         self.parser.add_argument('-t', '--data_formats', type=str, nargs='+',

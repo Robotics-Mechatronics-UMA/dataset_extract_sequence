@@ -9,15 +9,15 @@ class SingleSequence:
         Class to extract a single sequence.
     """
 
-    def __init__(self, output, folder, devices, datatypes, start, end, exclude="", pop_limits=False):
+    def __init__(self, output, folder, devices, datatypes, start, end, verbose_print= lambda *a: None):
         self.output = output
         self.folder = folder
         self.devices = devices
         self.datatypes = datatypes
         self.start = start
         self.end = end
-        self.exclude = exclude
-        self.pop_limits = pop_limits
+        self.verbose_print = verbose_print
+
 
         self.list_directories()
         self.create_output_directories()
@@ -27,12 +27,12 @@ class SingleSequence:
             Method to list all the directories to extract data from.
         """
         if(len(self.devices) != len(self.datatypes)):
-            print("ERROR: DEVICES AND DATATYPES MISMATCH!!")
+            self.verbose_print("ERROR: DEVICES AND DATATYPES MISMATCH!!")
 
         self.directories = []
 
         for idx, device in enumerate(self.devices):
-            print("Device added: " + device)
+            self.verbose_print("Device added: " + device)
             self.directories.append(DataDirectory(device, self.datatypes[idx]))
     
     def create_output_directories(self):
@@ -44,7 +44,7 @@ class SingleSequence:
 
             for directory in self.directories:
                 mkdir(join(self.output,directory.device))
-                print("Created directory: " + join(self.output,directory.device))
+                self.verbose_print("Created directory: " + join(self.output,directory.device))
 
     def get_timestamp_txt(self, line):
         """
@@ -74,7 +74,7 @@ class SingleSequence:
             self.extract_data_multi(directory)
 
         else:
-            print("ERROR DATATYPE NOT RECOGNISED!!")
+            self.verbose_print("ERROR DATATYPE NOT RECOGNISED!!")
 
     def extract_data_single(self, directory):
         """
@@ -91,8 +91,8 @@ class SingleSequence:
             for line in input_file:
                 timestamp = self.get_timestamp_txt(line)
                 if(timestamp >= self.start and timestamp <= self.end):
-                    #print("As: " + str(timestamp) + " is in between: " + str(self.start) + " and " + str(self.end))
-                    print("Written: " + line)
+                    #self.verbose_print("As: " + str(timestamp) + " is in between: " + str(self.start) + " and " + str(self.end))
+                    self.verbose_print("Written: " + line)
                     output_file.write(line)
 
     def extract_data_multi(self, directory):
@@ -104,8 +104,8 @@ class SingleSequence:
             timestamp = self.get_timestamp_filename(filename)
 
             if(timestamp >= self.start and timestamp <= self.end):
-                #print("As: " + str(timestamp) + " is in between: " + str(self.start) + " and " + str(self.end))
-                print("Copied: " + filename)
+                #self.verbose_print("As: " + str(timestamp) + " is in between: " + str(self.start) + " and " + str(self.end))
+                self.verbose_print("Copied: " + filename)
                 copyfile(join(self.folder, directory.device, filename),
                          join(self.output, directory.device, filename))
 
@@ -115,7 +115,7 @@ class SingleSequence:
         """
         for directory in self.directories:
             self.extract_data(directory)
-            print('Extracted: ' + directory.device)
+            self.verbose_print('Extracted: ' + directory.device)
 
 
 class DataDirectory:

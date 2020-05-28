@@ -10,8 +10,14 @@ options = FileExtractOptions()
 opts = options.parse()
 cwd = getcwd()
 
+if opts.verbose:
+    def verbose_print(*args):
+        for arg in args:
+            print(arg)
+else:
+    verbose_print = lambda *a: None
 
-def file_parser(filename):
+def file_parser(filename, verbose=False):
 
     sequences = []
 
@@ -25,11 +31,11 @@ def file_parser(filename):
                 start = float(interval.split(':')[0])
                 end = float(interval.split(':')[1])
                 if end == -1 :
-                    #print("End set to: " + str(float("inf")))
+                    verbose_print("End set to: " + str(float("inf")))
                     end = float("inf")
                 sequence = SingleSequence(join(cwd, output.strip()), join(
-                    cwd, folder.strip()), devices.strip().split(), data_formats.strip().split(), start, end)
-                #print("Added sequence with: " + str(sequence.start) + " and " + str(sequence.end))
+                    cwd, folder.strip()), devices.strip().split(), data_formats.strip().split(), start, end, verbose)
+                verbose_print("Added sequence with: " + str(sequence.start) + " and " + str(sequence.end))
                 sequences.append(sequence)
 
     return sequences
@@ -37,7 +43,7 @@ def file_parser(filename):
 
 if __name__ == "__main__":
 
-    sequences = file_parser(opts.filename)
+    sequences = file_parser(opts.filename, verbose_print)
 
     for sequence in sequences:
         sequence.extract()

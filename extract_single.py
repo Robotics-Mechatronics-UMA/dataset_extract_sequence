@@ -12,6 +12,6 @@ cwd = getcwd()
 if __name__ == "__main__":
 
     sequence = SingleSequence(join(cwd, opts.output), join(cwd, opts.folder), opts.device_list,
-                              opts.data_types, opts.start, opts.end)
+                              opts.data_types, opts.start, opts.end, opts.verbose)
 
     sequence.extract()

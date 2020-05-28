@@ -9,7 +9,8 @@ class FileExtractOptions():
 
         self.parser.add_argument('-f', '--filename', type=str,
                                  help='Extraction file name', required=True)
-
+        self.parser.add_argument('-v', '--verbose', type=bool,
+                                 help='Optional parameter to print additional info for debug purposes.', default=False)
     def parse(self):
         self.options = self.parser.parse_args()
         return self.options
