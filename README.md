@@ -70,8 +70,8 @@ The relative path and name (to the script execution directory) for the input seq
         device1/
             data.txt                (if single file)
         device2/
-            seqNum1_tmstmp1.ext     (if multiple files)
-            seqNum1_tmstmp1.ext
+            device-tmstmp1.ext     (if multiple files)
+            device-tmstmp1.ext
             .
             .
             .
@@ -96,7 +96,7 @@ The format can be:
 
 * multiple_files: in case that the data is stored in multiple files. The filename of the data is expected to be:
 
-        seqNumber_timestamp.extension
+        device-timestamp.extension
 
 ### Interval
 Each interval is of type:

@@ -59,7 +59,7 @@ class SingleSequence:
             Method to get the timestamp from a filename
         """
         name, _ = splitext(filename)
-        timestamp = float(name.split('_')[1])
+        timestamp = float(name.split('-')[1])
 
         return timestamp
 
