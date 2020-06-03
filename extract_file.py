@@ -25,7 +25,7 @@ def file_parser(filename, verbose=False):
 
         for line in f:
 
-            output, folder, devices, data_formats, intervals = line.split('/')
+            output, folder, devices, data_formats, intervals = line.split('|')
 
             for interval in intervals.strip().split():
                 start = float(interval.split(':')[0])

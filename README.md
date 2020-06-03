@@ -50,12 +50,12 @@ In the case of `extract_file`, you have to create a .txt file to store the infor
 
 ## Extraction format
 
-In order to ease the extraction of multiple sequences in a shareable format, a file based method is implemented. Each line corresponds to a sequence that can have the same name. The format uses `/` , ` ` or `:` separators and there must be no blank lines. 
+In order to ease the extraction of multiple sequences in a shareable format, a file based method is implemented. Each line corresponds to a sequence that can have the same name. The format uses `|` , ` ` or `:` separators and there must be no blank lines. 
 
 Each line is:
 
 ```
-output / folder / device1,device2 ... / format1, format2 ... / interaval 1, interval 2 ...
+output | folder | device1,device2 ... | format1, format2 ... | interaval 1, interval 2 ...
 ```
 
 ### Output
@@ -99,6 +99,7 @@ The format can be:
         device-timestamp.extension
 
 ### Interval
+
 Each interval is of type:
 
     start:end
