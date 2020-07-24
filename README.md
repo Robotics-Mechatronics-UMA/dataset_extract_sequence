@@ -13,7 +13,7 @@ Just clone the repository and check the dependencies.
 * Python packages:
     * os
     * argparse
-    * shutil
+    * shutil (for copying files)
 
 ## Contents
 
@@ -24,6 +24,8 @@ Just clone the repository and check the dependencies.
 
 ## Usage
 
+The recommended method is `extract_file`.
+
 In the case of `extract_single`, you have to specify all the needed arguments. There are different examples in `tests_single.txt`:
 
     python extract_from_file.py -o output/ -f input/ -d imu -t single_file --start 1559735717.606276 --end 1559735717.720282
@@ -31,6 +33,10 @@ In the case of `extract_single`, you have to specify all the needed arguments. T
 In the case of `extract_file`, you have to create a .txt file to store the information about the extraction in the right format (see [Extraction format](https://github.com/davdmc/extract_sequence#extraction-format) or [extraction_format.txt](https://github.com/davdmc/extract_sequence/blob/master/extraction_format.txt)). There is an example in the file `test_sequence.txt`:
 
     python extract_file.py -f test_file.txt
+
+Both extracts have a sequencing options. This options allows to create a correspondence file between the extracted timestamps and a continuous sequence number in order to index consecutive data.
+
+For the output folder, if the folder is a subdirectory, the intermediate subdorectories must be created by the user.
 
 ## Single extraction options
 
@@ -50,13 +56,12 @@ In the case of `extract_file`, you have to create a .txt file to store the infor
 
 ## Extraction format
 
-In order to ease the extraction of multiple sequences in a shareable format, a file based method is implemented. Each line corresponds to a sequence that can have the same name. The format uses `|` , ` ` or `:` separators and there must be no blank lines. 
+This is the format to be followed by any .txt that wants to be used as an input for the extract_file.py script.
+Each line corresponds to a sequence that can have the same name. The format uses `|` , `:` or ` ` separators depending on the case. 
 
 Each line is:
 
-```
-output | folder | device1,device2 ... | format1, format2 ... | interaval 1, interval 2 ...
-```
+        output | folder | device1 device2 ... | format1 format2 ... | interaval1 interval2 ...
 
 ### Output
 

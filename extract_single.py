@@ -9,6 +9,7 @@ options = SingleExtractOptions()
 opts = options.parse()
 cwd = getcwd()
 
+# Add a print option
 if opts.verbose:
     def verbose_print(*args):
         for arg in args:
@@ -18,7 +19,9 @@ else:
 
 if __name__ == "__main__":
 
-    sequence = SingleSequence(join(cwd, opts.output), join(cwd, opts.folder), opts.device_list,
-                              opts.data_types, opts.start, opts.end, verbose_print)
+    seq_numbers = {}
 
-    sequence.extract()
+    sequence = SingleSequence(join(cwd, opts.output), join(cwd, opts.folder), opts.device_list,
+                              opts.data_types, opts.start, opts.end, verbose_print, opts.sequencing)
+
+    sequence.extract(seq_numbers)

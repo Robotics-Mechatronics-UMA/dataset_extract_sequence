@@ -9,7 +9,7 @@ class SingleSequence:
         Class to extract a single sequence.
     """
 
-    def __init__(self, output, folder, devices, datatypes, start, end, verbose_print= lambda *a: None):
+    def __init__(self, output, folder, devices, datatypes, start, end, verbose_print=lambda *a: None, sequencing=False):
         self.output = output
         self.folder = folder
         self.devices = devices
@@ -17,7 +17,9 @@ class SingleSequence:
         self.start = start
         self.end = end
         self.verbose_print = verbose_print
+        self.sequencing = sequencing
 
+        if self.sequencing : self.seq_numbers = {}
 
         self.list_directories()
         self.create_output_directories()
@@ -34,17 +36,19 @@ class SingleSequence:
         for idx, device in enumerate(self.devices):
             self.verbose_print("Device added: " + device)
             self.directories.append(DataDirectory(device, self.datatypes[idx]))
-    
+
     def create_output_directories(self):
         """
             Method to create the directories to extract the data.
         """
+        
         if not isdir(self.output):
             mkdir(self.output)
 
             for directory in self.directories:
-                mkdir(join(self.output,directory.device))
-                self.verbose_print("Created directory: " + join(self.output,directory.device))
+                mkdir(join(self.output, directory.device))
+                self.verbose_print("Created directory: " +
+                                   join(self.output, directory.device))
 
     def get_timestamp_txt(self, line):
         """
@@ -59,6 +63,7 @@ class SingleSequence:
             Method to get the timestamp from a filename
         """
         name, _ = splitext(filename)
+        print("Extracting:" + filename)
         timestamp = float(name.split('-')[1])
 
         return timestamp
@@ -81,7 +86,7 @@ class SingleSequence:
             Method to extract part of a input data.txt file and copy it to the output data.txt.
         """
         # Get the name for the input file: /folder/device/data.txt
-        input_file_name = join(self.folder,directory.device, 'data.txt')
+        input_file_name = join(self.folder, directory.device, 'data.txt')
 
         # Get the name for the output file: /output/device/data.txt
         output_file_name = join(self.output, directory.device, 'data.txt')
@@ -91,32 +96,47 @@ class SingleSequence:
             for line in input_file:
                 timestamp = self.get_timestamp_txt(line)
                 if(timestamp >= self.start and timestamp <= self.end):
-                    #self.verbose_print("As: " + str(timestamp) + " is in between: " + str(self.start) + " and " + str(self.end))
+                    # self.verbose_print("As: " + str(timestamp) + " is in between: " + str(self.start) + " and " + str(self.end))
                     self.verbose_print("Written: " + line)
                     output_file.write(line)
 
+                    if self.sequencing: self.register_sequence(directory, timestamp)
+                        
+
     def extract_data_multi(self, directory):
 
+        files = sorted(listdir(join(self.folder, directory.device)))
         # List the directory files.
-        for filename in listdir(join(self.folder,directory.device)):
+        for filename in files:
 
             # Separate sequence, timestamps and extension.
             timestamp = self.get_timestamp_filename(filename)
 
             if(timestamp >= self.start and timestamp <= self.end):
-                #self.verbose_print("As: " + str(timestamp) + " is in between: " + str(self.start) + " and " + str(self.end))
+                # self.verbose_print("As: " + str(timestamp) + " is in between: " + str(self.start) + " and " + str(self.end))
                 self.verbose_print("Copied: " + filename)
                 copyfile(join(self.folder, directory.device, filename),
                          join(self.output, directory.device, filename))
 
-    def extract(self):
+                if self.sequencing: self.register_sequence(directory, timestamp)
+
+    def extract(self, seq_numbers):
         """
             Method to extract all data from a single folder.
         """
+        if self.sequencing:
+            self.seq_numbers = seq_numbers
+            for directory in self.directories:
+                if not (directory.device in seq_numbers) : seq_numbers[directory.device] = 0
+
         for directory in self.directories:
             self.extract_data(directory)
             self.verbose_print('Extracted: ' + directory.device)
 
+    def register_sequence(self, directory, timestamp):
+        with open(join(self.output, '..', 'translation_file_{}.txt'.format(directory.device)), 'a+') as translation_file:
+            self.seq_numbers[directory.device] += 1
+            translation_file.write("{:010} {:.6f}\n".format(self.seq_numbers[directory.device],timestamp))
 
 class DataDirectory:
     """

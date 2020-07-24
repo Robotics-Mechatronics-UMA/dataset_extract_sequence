@@ -19,8 +19,10 @@ class SingleExtractOptions():
                                  help='Start time for the sequence', required=True)
         self.parser.add_argument('--end', type=float,
                                  help='End time for the sequence', required=True)
-        self.parser.add_argument('-v', '--verbose', type=bool,
-                                 help='Optional parameter to print additional info for debug purposes.', default=False)
+        self.parser.add_argument('-v', '--verbose', action='store_true',
+                                 help='Optional parameter to print additional info for debug purposes.')
+        self.parser.add_argument('-s', '--sequencing', action='store_true',
+                                 help='Optional parameter to create a sequence number out of the data.')
 
     def parse(self):
         self.options = self.parser.parse_args()

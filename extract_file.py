@@ -1,7 +1,7 @@
 from os import listdir, getcwd
 from os.path import isfile, isdir, join
 
-#from single_extract_options import SingleExtractOptions
+#from single_extract_options import FileExtractOptions
 from extract_file_options import FileExtractOptions
 from extract_sequence import SingleSequence
 
@@ -10,6 +10,7 @@ options = FileExtractOptions()
 opts = options.parse()
 cwd = getcwd()
 
+# Add a print option
 if opts.verbose:
     def verbose_print(*args):
         for arg in args:
@@ -18,7 +19,9 @@ else:
     verbose_print = lambda *a: None
 
 def file_parser(filename, verbose=False):
-
+    '''
+        Extract the data from the extraction file and returns a sequence list.
+    '''
     sequences = []
 
     with open(filename, 'r') as f:
@@ -30,11 +33,14 @@ def file_parser(filename, verbose=False):
             for interval in intervals.strip().split():
                 start = float(interval.split(':')[0])
                 end = float(interval.split(':')[1])
+
+                # Use the maximum time.
                 if end == -1 :
-                    verbose_print("End set to: " + str(float("inf")))
                     end = float("inf")
+
+                # Create a single sequence object from the data.
                 sequence = SingleSequence(join(cwd, output.strip()), join(
-                    cwd, folder.strip()), devices.strip().split(), data_formats.strip().split(), start, end, verbose)
+                    cwd, folder.strip()), devices.strip().split(), data_formats.strip().split(), start, end, verbose, opts.sequencing)
                 verbose_print("Added sequence with: " + str(sequence.start) + " and " + str(sequence.end))
                 sequences.append(sequence)
 
@@ -42,8 +48,13 @@ def file_parser(filename, verbose=False):
 
 
 if __name__ == "__main__":
+    
+    # Create a persistent sequence number list across all the sequences.
+    seq_numbers = {}
 
+    # Create the sequence list.
     sequences = file_parser(opts.filename, verbose_print)
 
+    # Extract each sequence separatedly.
     for sequence in sequences:
-        sequence.extract()
+        sequence.extract(seq_numbers)
