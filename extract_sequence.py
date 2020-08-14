@@ -1,4 +1,4 @@
-from os import listdir, getcwd, mkdir
+from os import listdir, getcwd, mkdir, makedirs
 from os.path import isfile, isdir, join, splitext
 from shutil import copyfile
 import io
@@ -43,7 +43,7 @@ class SingleSequence:
         """
         
         if not isdir(self.output):
-            mkdir(self.output)
+            makedirs(self.output)
 
             for directory in self.directories:
                 mkdir(join(self.output, directory.device))

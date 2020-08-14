@@ -40,9 +40,9 @@ For the output folder, if the folder is a subdirectory, the intermediate subdore
 
 ## Single extraction options
 
-- `-o/--output:` Output sequence name (i.e. relative path).
+- `-o/--output:` Output sequence name (i.e. relative path from the execution directory).
 
-- `-f/--folder:` Objective folder to extract from.
+- `-f/--folder:` Objective folder to extract from (i.e. relative path from the execution directory).
 
 - `-d/--device_list:` Spaced separated list with the aimed devices.
 
@@ -65,11 +65,11 @@ Each line is:
 
 ### Output
 
-The relative path and name (to the script execution directory) for the output sequence (e.g. folder). If it already exists, it will add the data appending to the existent data.txt and merging (with override if it exists) of the files for the already existent devices.
+The relative path and name (from the script execution directory) for the output sequence (e.g. folder). If it already exists, it will add the data appending to the existent data.txt and merging (with override if it exists) of the files for the already existent devices.
 
 ### Folder
 
-The relative path and name (to the script execution directory) for the input sequence to be splitted. It is assumed to have the following format:
+The relative path and name (from the script execution directory) for the input sequence to be splitted. It is assumed to have the following format:
 
     sequence/
         device1/
